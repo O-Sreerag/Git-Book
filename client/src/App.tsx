@@ -1,18 +1,28 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Route, Link, BrowserRouter, Routes } from 'react-router-dom'
 
-import ErrorPage from "./pages/error"
+import SearchPage from './pages/searchPage'
+import UserPage from './pages/userPage'
+import RepoDetails from './pages/repoDetails'
+import FollowersList from './pages/friendsList'
 
-function App() {
+import { UserProvider } from './contexts/userContext'
+
+export default function App() {
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<>hello</>} />
-          <Route path='*' element={<ErrorPage />} />
-        </Routes>
-      </BrowserRouter>
-    </>
-  );
+    <BrowserRouter>
+      <div className="app">
+        <nav>
+          <Link to="/">Home</Link>
+        </nav>
+        <UserProvider>
+          <Routes>
+            <Route path="/" element={<SearchPage />} />
+            <Route path="/user/:username" element={<UserPage />} />
+            <Route path="/user/:username/repo/:repoName" element={<RepoDetails />} />
+            <Route path="/user/:username/followers" element={<FollowersList />} />
+          </Routes>
+        </UserProvider >
+      </div>
+    </BrowserRouter>
+  )
 }
-
-export default App;
