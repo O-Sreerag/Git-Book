@@ -15,6 +15,13 @@
       "when": 1709892908613,
       "tag": "0001_slow_the_renegades",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1725675981372,
+      "tag": "0002_flowery_sersi",
+      "breakpoints": true
     }
   ]
 }

@@ -5,16 +5,17 @@ import { validationResult } from "express-validator";
 import { userTable } from "../db/schema.js";
 
 export const getUser = async (req: Request, res: Response) => {
+    console.log("get user controller")
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
 
     const username: string = req.params.username!;
-
     try {
         const existingUser = await UserService.getUserByUsername(username);
         if (existingUser.length > 0) {
+            console.log("existing user")
             return res.status(200).json(existingUser[0]);
         }
 
@@ -34,8 +35,11 @@ export const getUser = async (req: Request, res: Response) => {
             createdAt: new Date(userData.created_at)
         });
 
+        console.log(result)
+
         res.status(201).json(result[0]);
     } catch (error) {
+        console.log(error)
         res.status(500).json({ error: 'An error occurred while processing your request' });
     }
 };

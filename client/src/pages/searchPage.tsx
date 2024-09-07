@@ -10,11 +10,12 @@ export default function SearchPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const response = await fetch(`https://api.github.com/users/${username}`)
+      // const response = await fetch(`https://api.github.com/users/${username}`)
+      const response = await fetch(`http://localhost:8080/user/${username}`)
       const userData = await response.json()
       setUser(userData)
       console.log(userData)
-      navigate(`/user/${username}`)
+      // navigate(`/user/${username}`)
     } catch (error) {
       console.error('Error fetching user data:', error)
     }

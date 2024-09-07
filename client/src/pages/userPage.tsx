@@ -11,7 +11,9 @@ export default function UserPage() {
         const fetchData = async () => {
             if (!user || user.login !== username) {
                 try {
-                    const userResponse = await fetch(`https://api.github.com/users/${username}`)
+                    // const userResponse = await fetch(`https://api.github.com/users/${username}`)
+                    const userResponse = await fetch(`http://localhost:8080/user/${username}`)
+                    console.log(userResponse)
                     const user = await userResponse.json()
                     setUser(user)
                 } catch (error) {
