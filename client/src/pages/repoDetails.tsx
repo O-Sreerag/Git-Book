@@ -1,34 +1,65 @@
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useUser } from '../contexts/userContext';
+import { Repo } from '../interface/interface';
 
-export default function RepoDetails() {
-  const { username, repoName } = useParams()
-  const [repoData, setRepoData] = useState(null)
+interface RepoDetailsProps {
+    repoData: Repo;
+}
 
-  useEffect(() => {
-    const fetchRepoData = async () => {
-      try {
-        const response = await fetch(`https://api.github.com/repos/${username}/${repoName}`)
-        const data = await response.json()
-        setRepoData(data)
-        console.log(repoData)
-      } catch (error) {
-        console.error('Error fetching repo data:', error)
-      }
-    }
+export default function RepoDetails({ repoData }: RepoDetailsProps) {
+    if (!repoData) return <div>Loading...</div>;
+    const { user } = useUser()
 
-    fetchRepoData()
-  }, [username, repoName])
-
-  if (!repoData) return <div>Loading...</div>
-
-  return (
-    <div className="repo-details">
-      <h2>{repoData.name}</h2>
-      <p>{repoData.description}</p>
-      <p>Stars: {repoData.stargazers_count}</p>
-      <p>Forks: {repoData.forks_count}</p>
-      <p>Language: {repoData.language}</p>
-    </div>
-  )
+    return (
+        <div>
+            <div className="app-card">
+                <div className="app-icon">
+                    <img 
+                        src={user?.avatar_url || "/placeholder.svg"} 
+                        alt={`${repoData.name} logo`} 
+                        width="80" 
+                        height="80" 
+                    />
+                </div>
+                <div className="app-content">
+                    <div className="app-header">
+                        <span className="app-type">Repository</span>
+                        <h1 className="app-title">{repoData.full_name}</h1>
+                        <button className="setup-button">
+                            Star Count: {repoData.stargazers_count | 0}
+                        </button>
+                    </div>
+                    <div className="app-description">
+                        <p><strong>{repoData.name}</strong></p>
+                        <p>{repoData.description || "No description available."}</p>
+                        <p>Language: {repoData.language || "Not specified"}</p>
+                        <p>Forks: {repoData.forks_count | 0}</p>
+                        <p>Open Issues: {repoData.open_issues_count | 0}</p>
+                    </div>
+                </div>
+                <div className="app-sidebar">
+                    <div className="owner-info">
+                        <h3>Owner</h3>
+                        <p>{user?.username}</p>
+                        <a 
+                            href={`https://github.com/${user?.username}`} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                        >
+                            GitHub Profile
+                        </a>
+                    </div>
+                    <div className="repo-links">
+                        <h3>Repository Links</h3>
+                        <a 
+                            href={repoData.html_url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                        >
+                            View on GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }

@@ -1,26 +1,19 @@
 {
-  "version": "5",
-  "dialect": "pg",
+  "version": "7",
+  "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1709041617143,
-      "tag": "0000_spotty_longshot",
+      "version": "7",
+      "when": 1725690079532,
+      "tag": "0000_pink_vision",
       "breakpoints": true
     },
     {
       "idx": 1,
-      "version": "5",
-      "when": 1709892908613,
-      "tag": "0001_slow_the_renegades",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1725675981372,
-      "tag": "0002_flowery_sersi",
+      "version": "7",
+      "when": 1725692513074,
+      "tag": "0001_slippery_tyrannus",
       "breakpoints": true
     }
   ]

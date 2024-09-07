@@ -1,65 +1,47 @@
-import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useUser } from '../contexts/userContext'
+import { useRepos } from '../contexts/reposContext'
+import { Repo } from '../interface/interface'
+import RepoDetails from './repoDetails'
+import { useState } from 'react'
 
 export default function UserPage() {
+    const [selectedRepo, setSelectedRepo] = useState<Repo | null>()
     const { username } = useParams()
-    const { user, setUser} = useUser()
-    const [repos, setRepos] = useState([])
-
-    useEffect(() => {
-        const fetchData = async () => {
-            if (!user || user.login !== username) {
-                try {
-                    // const userResponse = await fetch(`https://api.github.com/users/${username}`)
-                    const userResponse = await fetch(`http://localhost:8080/user/${username}`)
-                    console.log(userResponse)
-                    const user = await userResponse.json()
-                    setUser(user)
-                } catch (error) {
-                    console.error('Error fetching user data:', error)
-                }
-            }
-
-            try {
-                const reposResponse = await fetch(`https://api.github.com/users/${username}/repos`)
-                const reposData = await reposResponse.json()
-                setRepos(reposData)
-                console.log(reposData)
-            } catch (error) {
-                console.error('Error fetching repos:', error)
-            }
-        }
-
-        fetchData()
-    }, [username, user, setUser])
+    const { user } = useUser()
+    const { repos } = useRepos()
 
     if (!user) return <div>Loading...</div>
-
     return (
         <div className="user-page">
             <div className="user-info">
-                <img src={user.avatar_url} alt={`${user.login}'s avatar`} />
-                <h2>{user.name || user.login}</h2>
+                <img src={user?.avatar_url} alt={`${user.username}'s avatar`} />
+                <h2>{user.name || user.username}</h2>
                 <p>{user.bio}</p>
                 <Link to={`/user/${username}/followers`}>Followers</Link>
             </div>
 
-            <div className="dev-repos-grid">
-                {repos.map((repo, index) => (
-                    <div key={repo.name} className={`repo-item ${index % 2 === 0 ? 'left' : 'right'}`}>
-                        <div className="repo-icon">
-                            <img src={user.avatar_url} alt={`${repo.name} icon`} className={`repo-img`}/>
-                        </div>
-                        <div className="repo-content">
-                            <Link to={`/user/${username}/repo/${repo.name}`}>
-                                <h3 className="repo-name">{repo.name} <span className="checkmark">✓</span></h3>
-                            </Link>
-                            <p className="repo-description">{repo.description}</p>
-                        </div>
+            {
+                selectedRepo == null ? (
+                    <div className="dev-repos-grid">
+                        {repos && repos.length > 1 && repos.map((repo: Repo, index: number) => (
+                            <div key={repo.name} className={`repo-item ${index % 2 === 0 ? 'left' : 'right'}`}>
+                                <div className="repo-icon">
+                                    <img src={user.avatar_url} alt={`${repo.name} icon`} className={`repo-img`} />
+                                </div>
+                                <div className="repo-content">
+                                    <button onClick={() => setSelectedRepo(repo)}>
+                                        <h3 className="repo-name">{repo.name} <span className="checkmark">✓</span></h3>
+                                    </button>
+                                    <p className="repo-description">{repo.description}</p>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
+                ) : (
+                    <RepoDetails repoData={selectedRepo} />
+                )
+            }
         </div>
     )
 }

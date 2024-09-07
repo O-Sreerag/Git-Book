@@ -1,21 +1,22 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUser } from '../contexts/userContext'
+import { useRepos } from '../contexts/reposContext'
 
 export default function SearchPage() {
   const [username, setUsername] = useState('')
   const navigate = useNavigate()
-  const { user, setUser} = useUser()
+  const { setUser} = useUser()
+  const { setRepos } = useRepos()
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault()
     try {
-      // const response = await fetch(`https://api.github.com/users/${username}`)
       const response = await fetch(`http://localhost:8080/user/${username}`)
       const userData = await response.json()
-      setUser(userData)
-      console.log(userData)
-      // navigate(`/user/${username}`)
+      setUser(userData.user)
+      setRepos(userData.repos)
+      navigate(`/user/${username}`)
     } catch (error) {
       console.error('Error fetching user data:', error)
     }
@@ -26,7 +27,7 @@ export default function SearchPage() {
       <h1>GitHub User Explorer</h1>
       <form onSubmit={handleSubmit}>
         <input
-          type="text"   
+          type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Enter GitHub username"

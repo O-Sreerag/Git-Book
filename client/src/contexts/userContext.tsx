@@ -1,7 +1,8 @@
 import React, { createContext, useState, ReactNode, useContext } from 'react';
+import { User } from '../interface/interface';
 
 interface userContextProps {
-    user: any | null;
+    user: User | null;
     setUser: (key: any | null) => void;
 }
 
