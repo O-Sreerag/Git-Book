@@ -10,7 +10,7 @@ export default function UserPage() {
     const { username } = useParams()
     const { user } = useUser()
     const { repos } = useRepos()
-
+    
     if (!user) return <div>Loading...</div>
     return (
         <div className="user-page">
@@ -18,7 +18,7 @@ export default function UserPage() {
                 <img src={user?.avatar_url} alt={`${user.username}'s avatar`} />
                 <h2>{user.name || user.username}</h2>
                 <p>{user.bio}</p>
-                <Link to={`/user/${username}/followers`}>Followers</Link>
+                <Link to={`/user/${username}/friends`}>Friends</Link>
             </div>
 
             {

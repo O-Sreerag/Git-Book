@@ -23,7 +23,6 @@ export default function RepoDetails({ repoData }: RepoDetailsProps) {
                 <div className="app-content">
                     <div className="app-header">
                         <span className="app-type">Repository</span>
-                        <h1 className="app-title">{repoData.full_name}</h1>
                         <button className="setup-button">
                             Star Count: {repoData.stargazers_count | 0}
                         </button>
@@ -37,21 +36,20 @@ export default function RepoDetails({ repoData }: RepoDetailsProps) {
                     </div>
                 </div>
                 <div className="app-sidebar">
-                    <div className="owner-info">
+                    <div className="repo-links">
                         <h3>Owner</h3>
-                        <p>{user?.username}</p>
                         <a 
                             href={`https://github.com/${user?.username}`} 
                             target="_blank" 
                             rel="noopener noreferrer"
                         >
-                            GitHub Profile
+                            {user?.username}
                         </a>
                     </div>
                     <div className="repo-links">
                         <h3>Repository Links</h3>
                         <a 
-                            href={repoData.html_url} 
+                            href={`https://github.com/${user?.username}/${repoData.name}`} 
                             target="_blank" 
                             rel="noopener noreferrer"
                         >

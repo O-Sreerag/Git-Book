@@ -19,7 +19,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<SearchPage />} />
               <Route path="/user/:username" element={<UserPage />} />
-              <Route path="/user/:username/followers" element={<FollowersList />} />
+              <Route path="/user/:username/friends" element={<FollowersList />} />
             </Routes>
           </ReposProvider>
         </UserProvider >
